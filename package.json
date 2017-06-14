@@ -18,16 +18,31 @@
     "css-loader": "^0.28.4",
     "debug": "~2.6.0",
     "express": "~4.14.1",
+    "extract-text-webpack-plugin": "^2.1.2",
     "knex": "^0.12.9",
     "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-alpha.16",
+    "material-ui-icons": "^1.0.0-alpha.3",
     "morgan": "~1.7.0",
     "mysql": "^2.13.0",
     "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.5",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-router-config": "^1.0.0-beta.3",
     "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1",
+    "request-promise": "^4.2.1",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.2",
     "webpack": "^2.6.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.4",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.2",
+    "svg-inline-loader": "^0.7.1",
+    "watchfile-webpack-plugin": "0.0.4",
+    "webpack-livereload-plugin": "^0.11.0"
   }
 }
