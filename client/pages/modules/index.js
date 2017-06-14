@@ -14,7 +14,9 @@ import AddIcon from 'material-ui-icons/Add';
 import Dialog from 'material-ui/Dialog';
 import Slide from 'material-ui/transitions/Slide';
 import Module from '../../components/module';
-import Navigation from '../../layout/navigation'
+import Navigation from '../../layout/navigation';
+import NavLink from "react-router-dom/NavLink";
+
 
 import styles from './modules.scss'
 
@@ -54,8 +56,11 @@ class Dashboard extends React.Component {
     render() {
         const tableCells = this.state.headerKeys.map((key, k) => <TableCell key={k}>{key}</TableCell>);
         const content = this.state.modules.map((module, key) => {
+            const navLink = `/module/${module._id}`;
             const innerContent = this.state.headerKeys.map((val, k) => <TableCell style={{cursor:'pointer'}} onClick={(e)=>this.navigate(e, module)} key={k}>{module[val]}</TableCell>);
-            return (<TableRow key={key}>{innerContent}</TableRow>)
+            return (<TableRow key={key}>
+                {innerContent}
+            </TableRow>)
         });
 
         return (

@@ -6,9 +6,6 @@ import axios from '../../utils/axiosWrapper';
 import {render} from 'react-dom';
 
 //Material UI elements
-import Paper from 'material-ui/Paper';
-import Dialog from 'material-ui/Dialog';
-
 import Module from '../../components/module';
 
 import styles from './module.scss'
