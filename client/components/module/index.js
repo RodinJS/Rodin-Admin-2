@@ -20,7 +20,7 @@ import _map from 'lodash/map';
 import _omit from 'lodash/omit';
 
 
-class Module extends React.Component {
+class ModuleElement extends React.Component {
     constructor(props) {
         super();
         this.props = props;
@@ -158,4 +158,4 @@ class Module extends React.Component {
     }
 }
 
-export default Module;
+export default ModuleElement;

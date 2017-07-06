@@ -18,14 +18,15 @@ const axiosInstance = axios.create(config);
 axiosInstance.interceptors.request.use(config => {
     config.headers['x-access-token'] = getCookie('token');
 
-
     return config;
+}, function (err) {
+    return Promise.reject(err);
 });
 
 // whenever a response is received from the node layer
 axiosInstance.interceptors.response.use(response => {
     return response;
-}, error => {
+}, function (error){
     // handle other types of response errors here
     return Promise.reject(error);
 });
