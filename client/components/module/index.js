@@ -17,7 +17,10 @@ import BackIcon from 'material-ui-icons/ArrowBack';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
 import _map from 'lodash/map';
-import _omit from 'lodash/omit';
+import Dialog from 'material-ui/Dialog';
+import RejectDialog from '../rejectDialog';
+import Slide from 'material-ui/transitions/Slide';
+
 
 
 class ModuleElement extends React.Component {
@@ -28,7 +31,7 @@ class ModuleElement extends React.Component {
             module: this.props.module ? this.props.module : {
                 title: '',
                 description: '',
-                author:'',
+                author: '',
                 url: '',
                 status: 'Pending',
                 exampleLink: '',
@@ -44,71 +47,69 @@ class ModuleElement extends React.Component {
     }
 
     handleRequestClose() {
-        if(this.props.callbackParent)
+        if (this.props.callbackParent)
             return this.props.callbackParent()
     }
 
-    updateModuleData(e, param){
+    updateModuleData(e, param) {
         this.state.module[param] = e.target.value;
-        this.setState({ module: this.state.module })
+        this.setState({module: this.state.module})
     }
 
-    createModule(){
+    createModule() {
         axios.post('/api/modules/', this.state.module)
-            .then(response=> this.handleRequestClose())
-            .catch(err=>{
+            .then(response => this.handleRequestClose())
+            .catch(err => {
                 console.log('err', err);
             })
     }
 
-    updateModule(){
+    updateModule() {
         axios.put('/api/modules/', this.state.module)
-            .then(response=> this.handleRequestClose())
-            .catch(err=>{
+            .then(response => this.handleRequestClose())
+            .catch(err => {
                 console.log('err', err);
             })
     }
 
-    approveModule(){
-        axios.post('/api/module/modules/status/Active', {moduleId:this.state.module._id})
-            .then(response=>{
+    approveModule() {
+        axios.post('/api/module/modules/status/Active', {moduleId: this.state.module._id})
+            .then(response => {
                 console.log('response', response);
             })
-            .catch(err=>{
+            .catch(err => {
                 console.log('err', err);
             })
     }
-    rejectModule(){
-        axios.post('/api/module/modules/status/Rejected', {moduleId:this.state.module._id})
-            .then(response=>{
-                console.log('response', response);
-            })
-            .catch(err=>{
-                console.log('err', err);
-            })
+
+    rejectModule() {
+        this.setState({open:true});
+    }
+
+    handleRequestClose() {
+        this.setState({open: false});
     }
 
     render() {
         const editMode = (
             <div>
-                <Button style={{color:'#fff'}} color="contrast" onClick={this.updateModule}>Edit</Button>
-                <Button style={{color:'#fff'}} color="contrast" onClick={this.handleRequestClose}>Delete</Button>
-                <Button style={{color:'#fff'}} color="contrast" onClick={this.approveModule}>Approve</Button>
-                <Button style={{color:'#fff'}} color="contrast" onClick={this.rejectModule}>Reject</Button>
+                <Button style={{color: '#fff'}} color="contrast" onClick={this.updateModule}>Edit</Button>
+                <Button style={{color: '#fff'}} color="contrast" onClick={this.handleRequestClose}>Delete</Button>
+                <Button style={{color: '#fff'}} color="contrast" onClick={this.approveModule}>Approve</Button>
+                <Button style={{color: '#fff'}} color="contrast" onClick={this.rejectModule}>Reject</Button>
             </div>
         );
         const createMode = (
             <div>
-                <Button style={{color:'#fff'}} color="contrast" onClick={this.createModule}>Create</Button>
+                <Button style={{color: '#fff'}} color="contrast" onClick={this.createModule}>Create</Button>
             </div>
         );
-        const inputFields = _map(this.state.module, (val, key)=>{
-            console.log(val, key);
+        const inputFields = _map(this.state.module, (val, key) => {
             val = val ? val.toString() : '';
             let field = '';
-            switch(key){
+            switch (key) {
                 case 'thumbnail':
-                    field = (<img  key={key} style={{width:'100px'}} src={val}/>);
+                    field = (<img key={key} style={{width: '100px'}} src={val}/>);
                     break;
                 default:
                     field = key != '__v' && key != '_id' ? (
@@ -132,20 +133,24 @@ class ModuleElement extends React.Component {
 
         return (
             <div>
-                <AppBar style={{background:'#09192E'}}>
+                <AppBar style={{background: '#09192E'}}>
                     <Toolbar>
-                        {this.props.callbackParent ? <IconButton style={{color:'#fff'}} color="contrast" onClick={this.handleRequestClose} aria-label="Close">
-                            <CloseIcon />
-                        </IconButton> : <IconButton style={{color:'#fff'}} color="contrast" onClick={(e)=> window.location.href = '/modules'} aria-label="Close">
+                        {this.props.callbackParent ?
+                            <IconButton style={{color: '#fff'}} color="contrast" onClick={this.handleRequestClose}
+                                        aria-label="Close">
+                                <CloseIcon />
+                            </IconButton> : <IconButton style={{color: '#fff'}} color="contrast"
+                                                        onClick={(e) => window.location.href = '/modules'}
+                                                        aria-label="Close">
                             <BackIcon />
                         </IconButton>}
-                        <Typography  type="title" color="inherit" style={{flex: 1, color:'#fff'}}>
+                        <Typography type="title" color="inherit" style={{flex: 1, color: '#fff'}}>
                             {this.props.module ? `Edit ${this.props.module.title} module` : 'Create module'}
                         </Typography>
                         {this.props.module ? editMode : createMode}
                     </Toolbar>
                 </AppBar>
-                <div style={{padding: '100px 0 0 0', overflowX:'scroll'}}>
+                <div style={{padding: '100px 0 0 0', overflowX: 'scroll'}}>
                     <Grid container
                           align="center"
                           direction="row"
@@ -153,6 +158,13 @@ class ModuleElement extends React.Component {
                         <Grid item xs={10}>{inputFields}</Grid>
                     </Grid>
                 </div>
+                <Dialog
+                    open={this.state.open}
+                    onRequestClose={this.handleRequestClose}
+                    transition={<Slide direction="up"/>}
+                >
+                    {this.state.open ? <RejectDialog module={this.state.module} callbackParent={this.handleRequestClose}/> : null}
+                </Dialog>
             </div>
         );
     }
