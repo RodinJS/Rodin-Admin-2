@@ -30,7 +30,7 @@ app.use('/api', index);
 
 app.get("*", (req, res, next) => {
     //Won't log every single request on the logger to avoid cluttering. Console only.
-    console.log(req.method + ' ' + req.headers.host + req.url);
+    // console.log(req.method + ' ' + req.headers.host + req.url);
 
     const isApiRoute = req.url.startsWith('/api/');
 

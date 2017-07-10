@@ -1,31 +1,44 @@
 /**
  * Created by xgharibyan on 6/7/17.
  */
+import './assets/main.scss';
+import 'react-notifications/src/notifications.scss';
+//
 import React from 'react';
 import {render} from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import BrowserRouter from "react-router-dom/BrowserRouter";
-import Route from "react-router-dom/Route";
-import Switch from "react-router-dom/Switch";
-import { MuiThemeProvider } from 'material-ui/styles';
-import { renderRoutes } from 'react-router-config'
-
-
-import axios from './utils/axiosWrapper';
+import {Provider} from 'react-redux';
+import {MuiThemeProvider} from 'material-ui/styles';
+import {renderRoutes} from 'react-router-config'
+import configStore from "./store/configStore";
+const store = configStore();
 
 //Components
+import Header from './components/main/header';
+import Notification from './components/notification';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import Modules from './pages/modules';
-import Module from './pages/module';
+import Module from './pages/modules/module';
 import Users from './pages/users';
+import User from './pages/users/user';
+
+
 injectTapEventPlugin();
 
-const Root = ({ route }) => (
-    <div>
-        {renderRoutes(route.routes)}
+const Root = ({route}) => {
+    return (
+    <div id="wrapper">
+        <Header/>
+        <Notification/>
+        <div id="page-wrapper">
+            <div className="container-fluid">
+                {renderRoutes(route.routes)}
+            </div>
+        </div>
     </div>
-);
+)};
 
 const routes = [{
     component: Root,
@@ -50,6 +63,11 @@ const routes = [{
         {
             path: '/users',
             component: Users,
+            name: 'Users'
+        },
+        {
+            path: '/user/:username',
+            component: User
         },
         {
             path: '/dashboard',
@@ -59,13 +77,15 @@ const routes = [{
 }];
 
 class App extends React.Component {
-    render () {
+    render() {
         return (
-            <MuiThemeProvider>
-                <BrowserRouter >
-                    {renderRoutes(routes)}
-                </BrowserRouter>
-            </MuiThemeProvider>
+            <Provider store={store}>
+                <MuiThemeProvider>
+                    <BrowserRouter >
+                        {renderRoutes(routes)}
+                    </BrowserRouter>
+                </MuiThemeProvider>
+            </Provider>
         );
     }
 }
