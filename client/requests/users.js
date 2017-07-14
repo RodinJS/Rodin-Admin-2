@@ -5,7 +5,7 @@ import axiosInstance from '../utils/axiosWrapper/index';
 
 const rootURL = '/api/admin/user';
 
-export function list({sort ='-createdAt', limit = 50}) {
+export function getUsers({sort ='-createdAt', limit = 50}) {
     return axiosInstance.get(`${rootURL}` , {
         params:{
             sort,
@@ -14,14 +14,14 @@ export function list({sort ='-createdAt', limit = 50}) {
     });
 }
 
-export function get(username) {
+export function getUser(username) {
     return axiosInstance.get(`${rootURL}/${username}`);
 }
 
-export function update(username, data) {
+export function updateUser(username, data) {
     return axiosInstance.put(`${rootURL}/${username}`, data);
 }
 
-export function remove(username) {
+export function removeUser(username) {
     return axiosInstance.delete(`${rootURL}/${username}`);
 }

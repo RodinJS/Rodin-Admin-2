@@ -5,12 +5,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-
-import Module from '../../components/module';
-import {getAllModules} from '../../actions/modules';
+import {getModules} from '../../actions/modules';
 import Paginate from "../../components/main/pagination";
 import RdTable from "../../components/main/rdTable";
 import {ModuleListRow} from "./module/ModuleRow";
+import {Link} from "react-router-dom";
 
 
 class Modules extends Component {
@@ -19,7 +18,6 @@ class Modules extends Component {
         this.state = {
             headerKeys: ['Title', 'Author', 'Submitted Date', 'Approved Date', 'Rejected Date', 'Created At', 'Status'],
             modules: [],
-            showModal: false,
             currentPage: 1,
             itemsPerPage: 10,
             searchString: '',
@@ -28,6 +26,9 @@ class Modules extends Component {
         this.getModulesList = this.getModulesList.bind(this);
     }
 
+    openModal() {
+
+    }
     onOrderBy() {
 
     }
@@ -37,17 +38,13 @@ class Modules extends Component {
     }
 
     getModulesList() {
-        this.props.actions.getAllModules()
+        this.props.actions.getModules()
             .then(response => {
                 this.setState({modules: response.payload})
             })
             .catch(err => {
                 console.log('err', err);
             })
-    }
-
-    openModal() {
-        this.setState({showModal: true})
     }
 
     renderModules() {
@@ -58,6 +55,7 @@ class Modules extends Component {
         return current.map((value, key) => <ModuleListRow key={key} module={value}
                                                           onDelete={this.openModal.bind(this, value)}/>)
     }
+
 
     render() {
         let table, pagination;
@@ -78,14 +76,18 @@ class Modules extends Component {
         }
 
         return (
-            <div className="panel panel-default panel-table">
-                <div className="panel-heading">
-                    <input type="text" className="form-control" placeholder="Search by Title"/>
-                </div>
-                {table}
-                <div className="panel-footer">
-                    <div className="row">
-                        {pagination}
+            <div>
+                <Link className="btn btn-primary" to={'/module/create'}>Create + </Link>
+                <br/>
+                <div className="panel panel-default panel-table">
+                    <div className="panel-heading">
+                        <input type="text" className="form-control" placeholder="Search by Title"/>
+                    </div>
+                    {table}
+                    <div className="panel-footer">
+                        <div className="row">
+                            {pagination}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,12 +103,11 @@ Modules.contextTypes = {
     store: PropTypes.object
 };
 function mapStateToProps(state) {
-    console.log(state)
     return {}
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({getAllModules}, dispatch)}
+    return {actions: bindActionCreators({getModules}, dispatch)}
 
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Modules)

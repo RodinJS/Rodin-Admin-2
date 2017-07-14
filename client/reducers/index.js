@@ -3,13 +3,24 @@
  */
 import {combineReducers} from 'redux';
 import authReducer from './login';
-import modulesReducer from './modules';
-import usersReducer from './users';
-import userReducer from './user';
+import modulesReducer from './modules/modules';
+import moduleReducer from './modules/module';
+import usersReducer from './users/users';
+import userReducer from './users/user';
+import projectsReducer from './projects/projects';
 import notificationReducer from './notifications';
 import countsReducer from './counts';
 
-const rootReducer = combineReducers({authReducer, modulesReducer, usersReducer, userReducer, notificationReducer, countsReducer});
+const rootReducer = combineReducers({
+    authReducer,
+    modulesReducer,
+    moduleReducer,
+    usersReducer,
+    userReducer,
+    notificationReducer,
+    countsReducer,
+    projectsReducer
+});
 
 
 export default rootReducer

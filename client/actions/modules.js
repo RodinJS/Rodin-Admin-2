@@ -1,33 +1,49 @@
 /**
  * Created by Reinchard on 6/23/2017.
  */
-
-import {getModule, getModules} from '../requests/modules';
+import * as request from '../requests/modules';
 import * as types from "../constants/index";
 
-export function getAllModulesSuccess(payload) {
+export function getModulesSuccess(payload) {
     return {type: types.GET_MODULES_SUCCESS, payload: payload.data}
 }
 
-export function getAllModulesFail(err) {
+export function getModulesFail(err) {
     return {type: types.GET_MODULES_FAIL, payload: err.data}
 }
 
-export function getAllModules() {
-    return dispatch => getModules()
-        .then(payload => dispatch(getAllModulesSuccess(payload)))
-        .catch(err => dispatch(getAllModulesFail(err)))
+export function getModules() {
+    return dispatch => request.getModules()
+        .then(payload => dispatch(getModulesSuccess(payload)))
+        .catch(err => dispatch(getModulesFail(err)))
 }
 
-export function getSingleModuleSuccess(payload) {
+
+
+export function getModuleSuccess(payload) {
     return {type: types.GET_MODULE_SUCCESS, payload: payload.data}
 }
 
-export function getSingleModuleFail(err) {
+export function getModuleFail(err) {
     return {type: types.GET_MODULE_FAIL, payload: err.data}
 }
-export function getSingleModule(id) {
-    return dispatch => getModule(id)
-        .then(payload => dispatch(getSingleModuleSuccess(payload)))
-        .catch(err => dispatch(getSingleModuleFail(err)))
+export function getModule(id) {
+    return dispatch => request.getModule(id)
+        .then(payload => dispatch(getModuleSuccess(payload)))
+        .catch(err => dispatch(getModuleFail(err)))
+}
+
+// Module Actions
+function onRejectSucces(payload) {
+    return {type: types.ON_REJECT_SUCCESS, payload: payload.data}
+}
+
+function onRejectFail(err) {
+    return {type: types.ON_REJECT_FAIL, payload: err.data}
+}
+
+function onReject(data) {
+    return dispatch => request.onReject(data)
+        .then(payload => dispatch(onRejectSucces(payload)))
+        .catch(err => dispatch(onRejectFail(err)))
 }

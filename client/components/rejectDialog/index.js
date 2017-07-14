@@ -25,7 +25,7 @@ class RejectDialog extends React.Component {
 
     submit() {
         console.log(this.state.reason);
-        axios.post('/api/module/modules/status/Rejected', {moduleId: this.props.module._id, reason:this.state.reason})
+        axios.post('/api/getModule/getModules/status/Rejected', {moduleId: this.props.module._id, reason:this.state.reason})
             .then(response => {
                 this.setState({message:{success:true, data:'Module rejected'}})
             })

@@ -19,7 +19,7 @@ class ConfirmModal extends Component {
                     <Modal.Title>{this.props.options.title}
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body >
                     {this.props.options.body}
                 </Modal.Body>
                 <Modal.Footer>

@@ -3,6 +3,6 @@
  */
 
 import axiosInstance from '../utils/axiosWrapper/index';
-export function counts() {
+export function getCounts() {
     return axiosInstance.get('/api/admin/counts')
 }

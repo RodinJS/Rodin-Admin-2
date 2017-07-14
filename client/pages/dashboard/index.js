@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getCounts} from "../../actions/main";
-import {DashboardCounts} from "../../components/main/dashboardCounts";
+import {DashboardCountsItem} from "../../components/main/dashboardCounts";
 
 
 class Dashboard extends Component {
@@ -21,6 +21,11 @@ class Dashboard extends Component {
         this.props.actions.getCounts()
             .then(e => this.setState({data: e.payload}))
             .catch(err => console.log('errr', err))
+    }
+
+    renderCountSections() {
+        let keys = Object.keys(this.state.data);
+        return keys.map((item, key) => <DashboardCountsItem key={key} value={this.state.data[item]} type={item}/>)
     }
 
     render() {
@@ -38,7 +43,7 @@ class Dashboard extends Component {
                         </ol>
                     </div>
                 </div>
-                <DashboardCounts {...this.state.data}/>
+                {this.renderCountSections()}
             </div>
         );
     }

@@ -6,7 +6,11 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "../pages/dashboard/dashboard";
 @import "../pages/users/users.scss";
 @import "../pages/login/login";
+@import "../pages/modules/modules";
 
 .paperWrapper{
   padding: 80px;
+}
+.margin-bottom-20 {
+  margin-bottom: 20px;
 }
