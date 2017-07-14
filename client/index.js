@@ -62,6 +62,7 @@ const routes = [{
         {
             path: '/modules',
             component: Modules,
+            name: 'Modules'
         },
         {
             path: '/users',
@@ -79,6 +80,7 @@ const routes = [{
         {
             path: '/projects',
             component: Projects,
+            name: 'Projects'
         }, {
             path: '/project/:projectId',
             component: Project,
