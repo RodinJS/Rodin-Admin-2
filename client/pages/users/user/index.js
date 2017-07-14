@@ -14,7 +14,8 @@ class User extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            param: props.match.params.username
+            param: props.match.params.username,
+            updated: {}
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -33,7 +34,10 @@ class User extends Component {
         let fieldName = e.target.name;
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         const user = Object.assign({}, this.state.user, {[fieldName]: value});
-        this.setState(Object.assign({}, this.state, {user}, {updated: {[fieldName]: value}}));
+        this.setState({
+            user,
+            updated: Object.assign({}, this.state.updated, {[fieldName]: value})
+        });
     }
 
     onSubmit(e) {
@@ -46,7 +50,8 @@ class User extends Component {
     render() {
         let editUser;
         if (this.state.user) {
-            editUser = <EditUser user={this.state.user} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange}/>;
+            editUser =
+                <EditUser user={this.state.user} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange}/>;
         }
         return (<div>
             {editUser}
@@ -70,7 +75,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({getUser, updateUser,notify}, dispatch)}
+    return {actions: bindActionCreators({getUser, updateUser, notify}, dispatch)}
 
 }
 export default connect(mapStateToProps, mapDispatchToProps)(User);

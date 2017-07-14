@@ -1,7 +1,6 @@
 /**
  * Created by Reinchard on 7/4/2017.
  */
-ModuleListRow
 import React from 'react';
 import {Link} from "react-router-dom";
 import moment from 'moment';

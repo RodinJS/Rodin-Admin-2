@@ -23,22 +23,25 @@ import Modules from './pages/modules';
 import Module from './pages/modules/module';
 import Users from './pages/users';
 import User from './pages/users/user';
+import Projects from './pages/projects';
+import Project from './pages/projects/project';
 
 
 injectTapEventPlugin();
 
 const Root = ({route}) => {
     return (
-    <div id="wrapper">
-        <Header/>
-        <Notification/>
-        <div id="page-wrapper">
-            <div className="container-fluid">
-                {renderRoutes(route.routes)}
+        <div id="wrapper">
+            <Header/>
+            <Notification/>
+            <div id="page-wrapper">
+                <div className="container-fluid">
+                    {renderRoutes(route.routes)}
+                </div>
             </div>
         </div>
-    </div>
-)};
+    )
+};
 
 const routes = [{
     component: Root,
@@ -72,6 +75,13 @@ const routes = [{
         {
             path: '/dashboard',
             component: Dashboard,
+        },
+        {
+            path: '/projects',
+            component: Projects,
+        }, {
+            path: '/project/:projectId',
+            component: Project,
         }
     ]
 }];

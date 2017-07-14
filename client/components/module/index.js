@@ -4,9 +4,6 @@
 
 import React from 'react';
 import _map from 'lodash/map';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import {ControlLabel, FormControl, FormGroup} from "react-bootstrap";
 
 export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
     /**
@@ -14,7 +11,6 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
      * @type {{title: string, description: string, author: string, url: string, status: string, exampleLink: string, documentationLink: string, email: string}}
      * @param module, onSubmit, onAction {onApprove || onDelete || onReject}
      */
-    let reason;
     let element = module ? module : {
         title: '',
         description: '',
@@ -40,7 +36,7 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
                     </div>);
                 break;
             default:
-                field = key != '__v' && key != '_id' ?
+                field = key !== '__v' && key !== '_id' ?
                     <div className="form-group" key={key}>
                         <label className="col-md-4 control-label">{key}</label>
                         <div className="col-md-8">
@@ -74,15 +70,15 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
         if (element.createdAt) {
             return <div className="col-md-4">
                 <div className="btn-group pull-right">
-                    <button type="button" className="btn btn-success" onClick={(e) => {
+                    <button type="button" className="btn btn-success" onClick={() => {
                         onAction('success', 'Approve Module', 'onApprove', `Approve Module ${element.title}`)
                     }}>Approve
                     </button>
-                    <button type="button" className="btn btn-warning" onClick={(e) => {
+                    <button type="button" className="btn btn-warning" onClick={() => {
                         onAction('warning', 'Reject reason', 'onReject', rejectReason)
                     }}>Reject
                     </button>
-                    <button type="button" className="btn btn-danger" onClick={(e) => {
+                    <button type="button" className="btn btn-danger" onClick={() => {
                         onAction('danger', 'Delete Module', 'onDelete', `Delete Module ${element.title}`)
                     }}>Delete
                     </button>

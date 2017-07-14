@@ -34,7 +34,7 @@ export function getModule(id) {
 }
 
 // Module Actions
-function onRejectSucces(payload) {
+function onRejectSuccess(payload) {
     return {type: types.ON_REJECT_SUCCESS, payload: payload.data}
 }
 
@@ -44,6 +44,6 @@ function onRejectFail(err) {
 
 function onReject(data) {
     return dispatch => request.onReject(data)
-        .then(payload => dispatch(onRejectSucces(payload)))
+        .then(payload => dispatch(onRejectSuccess(payload)))
         .catch(err => dispatch(onRejectFail(err)))
 }

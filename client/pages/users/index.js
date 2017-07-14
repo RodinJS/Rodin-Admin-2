@@ -63,11 +63,11 @@ class Users extends Component {
 
     onDelete() {
         this.props.actions.removeUser(this.state.activeUser.username)
-            .then(res => {
+            .then(() => {
                 this.props.actions.notify('success', {message: 'Successfully deleted'});
                 this.setState({showModal: false});
             })
-            .catch((err) => {
+            .catch(() => {
                 this.props.actions.notify('error', {message: 'Cant delete'})
             })
     }

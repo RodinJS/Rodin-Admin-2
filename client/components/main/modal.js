@@ -43,7 +43,7 @@ ModalWrapper.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {}
 }
 

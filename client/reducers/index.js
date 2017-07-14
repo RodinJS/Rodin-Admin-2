@@ -8,6 +8,7 @@ import moduleReducer from './modules/module';
 import usersReducer from './users/users';
 import userReducer from './users/user';
 import projectsReducer from './projects/projects';
+import projectReducer from './projects/project';
 import notificationReducer from './notifications';
 import countsReducer from './counts';
 
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     userReducer,
     notificationReducer,
     countsReducer,
-    projectsReducer
+    projectsReducer,
+    projectReducer
 });
 
 

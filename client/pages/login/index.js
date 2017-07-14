@@ -8,14 +8,6 @@ import {login} from "../../actions/login";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-const style = {
-    width: '100%',
-    height: 'inherit',
-    margin: 20,
-    padding: 20,
-    textAlign: 'center',
-    display: 'inline-block',
-};
 
 class Login extends Component {
     constructor() {
@@ -49,7 +41,7 @@ class Login extends Component {
                 localStorage.setItem('token', JSON.stringify(response.payload.token));
                 this.props.history.push('/dashboard')
             })
-            .catch(err => {
+            .catch(() => {
                 this.props.notify('error', {message: 'Adadad'})
             })
     }
@@ -97,7 +89,7 @@ Login.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {
     }
 }

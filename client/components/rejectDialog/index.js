@@ -4,7 +4,6 @@
 
 import React from 'react';
 import axios from '../../utils/axiosWrapper';
-import {render} from 'react-dom';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 
@@ -26,7 +25,7 @@ class RejectDialog extends React.Component {
     submit() {
         console.log(this.state.reason);
         axios.post('/api/getModule/getModules/status/Rejected', {moduleId: this.props.module._id, reason:this.state.reason})
-            .then(response => {
+            .then(() => {
                 this.setState({message:{success:true, data:'Module rejected'}})
             })
             .catch(err => {
