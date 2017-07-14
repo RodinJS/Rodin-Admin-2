@@ -7,7 +7,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {logOut} from "../../actions/login";
-import {isEmpty, isEqual} from "lodash";
+import {isEmpty} from "lodash";
 import {SideBar} from "./SideBar";
 
 class Header extends Component {

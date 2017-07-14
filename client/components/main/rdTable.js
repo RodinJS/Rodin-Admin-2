@@ -19,22 +19,26 @@ class RdTable extends Component {
     }
 
     renderHeaders() {
-        let {orderBy, orderByField, onOrderBy} = this.props.options.order;
-        return this.state.headerKeys.map((key, k) => {
-            if (this.props.options.order && orderByField.indexOf(key.toLowerCase()) !== -1) {
-                return <th key={k}>{key}
-                    <span className="pull-right">
+        if (this.props.options.order) {
+            let {orderBy, orderByField, onOrderBy} = this.props.options.order;
+            return this.state.headerKeys.map((key, k) => {
+                if (this.props.options.order && orderByField.indexOf(key.toLowerCase()) !== -1) {
+                    return <th key={k}>{key}
+                        <span className="pull-right">
                         <i className={`fa ${orderBy[0] === '-' ? 'fa-sort' : 'fa-sort-desc'}`}
                            aria-hidden="true"
-                           onClick={(e) =>{
-                               onOrderBy(orderBy[0] === '-' ? key.toLowerCase(): `-${key.toLowerCase()}`)
+                           onClick={() => {
+                               onOrderBy(orderBy[0] === '-' ? key.toLowerCase() : `-${key.toLowerCase()}`)
                            }
                            }/>
         </span></th>
-            } else {
-                return (<th key={k}>{key}</th>)
-            }
-        })
+                }else {
+                    return <th key={k}>{key}</th>;
+                }
+            });
+        } else {
+            return this.state.headerKeys.map((key, k) => <th key={k}>{key}</th>);
+        }
     }
 
     render() {
@@ -54,14 +58,13 @@ class RdTable extends Component {
 }
 
 RdTable.propTypes = {
-    actions: PropTypes.object.isRequired,
     options: PropTypes.object.isRequired
 };
 RdTable.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {}
 }
 
