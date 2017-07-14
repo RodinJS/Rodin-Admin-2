@@ -9,7 +9,7 @@ const getCookie = function(name) {
 const config = {
     baseURL: '/', // all requests are routed to /api/something....
     timeout: 60000, // default timeout of 60 seconds
-    headers: { "Cache-Control": "no-store, no-cache, must-revalidate", "Expires": "0", "Pragma": "no-cache" } // don't cache get requests, we had an issue with IE 11 caching get requests
+    headers: { "Cache-Control": "no-store, no-cache, must-revalidate", "Expires": "0", "Pragma": "no-cache" } // don't cache getModule requests, we had an issue with IE 11 caching getModule requests
 };
 
 const axiosInstance = axios.create(config);

@@ -7,6 +7,10 @@ export function getModules() {
     return axiosInstance.get('/api/modules/');
 }
 
-export function getModule(id) {
-    return axiosInstance.get(`/api/modules/hook/${id}`);
+export function getModule(moduleId) {
+    return axiosInstance.get(`/api/modules/${moduleId}`);
+}
+
+export function onReject(data) {
+    return axiosInstance.post('/api/getModule/getModules/status/Rejected', data)
 }

@@ -1,7 +1,7 @@
 /**
  * Created by Reinchard on 7/3/2017.
  */
-import {counts} from  '../requests/main';
+import * as request from  '../requests/main';
 import * as types from "../constants/index";
 
 export function getCountsSuccess(payload) {
@@ -13,7 +13,7 @@ export function getCountsFail(err) {
 }
 
 export function getCounts() {
-    return dispatch => counts()
+    return dispatch => request.getCounts()
         .then(payload => dispatch(getCountsSuccess(payload)))
         .catch(err => dispatch(getCountsFail(err)))
 }

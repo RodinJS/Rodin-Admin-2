@@ -16,10 +16,6 @@ class Header extends Component {
         this.logout = this.logout.bind(this);
     }
 
-    componentWillUpdate(nextProps) {
-        console.log(nextProps)
-    }
-
     logout() {
         this.props.actions.logOut()
             .then(() => {
@@ -39,9 +35,9 @@ class Header extends Component {
                 <button type="button" className="navbar-toggle" data-toggle="collapse"
                         data-target=".navbar-ex1-collapse">
                     <span className="sr-only">Toggle navigation</span>
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
+                    <span className="icon-bar"/>
+                    <span className="icon-bar"/>
+                    <span className="icon-bar"/>
                 </button>
                 <Link to={'/'} className="navbar-brand">Rodin</Link>
             </div>

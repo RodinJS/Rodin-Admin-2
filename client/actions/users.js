@@ -2,20 +2,20 @@
  * Created by Reinchard on 6/23/2017.
  */
 import * as types from "../constants/index";
-import {get, list, update, remove} from '../requests/users';
+import * as request from '../requests/users';
 
-export function getListSuccess(payload) {
+export function getUsersSuccess(payload) {
     return {type: types.GET_USERS_SUCCESS, payload: payload.data}
 }
 
-export function getListFail(err) {
+export function getUsersFail(err) {
     return {type: types.GET_USERS_FAIL, payload: err.data}
 }
 
-export function getList({sort = '-createdAt', limit =  50}) {
-    return dispatch => list({sort, limit})
-        .then(payload => dispatch(getListSuccess(payload)))
-        .catch(err => dispatch(getListFail(err)));
+export function getUsers({sort = '-createdAt', limit =  50}) {
+    return dispatch => request.getUsers({sort, limit})
+        .then(payload => dispatch(getUsersSuccess(payload)))
+        .catch(err => dispatch(getUsersFail(err)));
 }
 
 export function getUserSuccess(payload) {
@@ -27,27 +27,16 @@ export function getUserFail(err) {
 }
 
 export function getUser(username) {
-    return dispatch => get(username)
+    return dispatch => request.getUser(username)
         .then(payload => dispatch(getUserSuccess(payload)))
         .catch(err => dispatch(getUserFail(err)))
 }
 
-// export function updateSingeUserSuccess(payload) {
-//     return {type: types.UPDATE_USER_SUCCESS, payload: payload.data}
-// }
-//
-// export function updateSingeUserFail(err) {
-//     console.log(err)
-//     return {type: types.UPDATE_USER_FAIL, payload: err.data}
-// }
-
 export function updateUser(username, data) {
-    return dispatch => update(username, data)
-        // .then(payload => dispatch(updateSingeUserSuccess(payload)))
-        // .catch(err => dispatch(updateSingeUserFail(err)))
+    return dispatch => request.updateUser(username, data)
 }
 
 export function removeUser(username) {
-    return dispatch => remove(username)
+    return dispatch => request.removeUser(username)
         .then((res) =>dispatch({type: types.REMOVE_USER, payload: res.data, key: username}))
 }

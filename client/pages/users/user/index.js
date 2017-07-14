@@ -33,12 +33,12 @@ class User extends Component {
         let fieldName = e.target.name;
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         const user = Object.assign({}, this.state.user, {[fieldName]: value});
-        this.setState(Object.assign({}, this.state, {user}));
+        this.setState(Object.assign({}, this.state, {user}, {updated: {[fieldName]: value}}));
     }
 
     onSubmit(e) {
         e.preventDefault();
-        this.props.actions.updateUser(this.state.param, this.state.user)
+        this.props.actions.updateUser(this.state.param, this.state.updated)
             .then((res) => this.props.actions.notify('success', {message: "User Updated"}))
             .catch((err) => this.props.actions.notify('error', {message: err.response.data.error.message}))
     }

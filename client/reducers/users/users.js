@@ -1,7 +1,7 @@
 /**
  * Created by Reinchard on 6/23/2017.
  */
-import {GET_USERS_FAIL, GET_USERS_SUCCESS, REMOVE_USER, USERS_SORT_BY} from '../constants/index';
+import {GET_USERS_FAIL, GET_USERS_SUCCESS, REMOVE_USER, USERS_SORT_BY} from '../../constants/index';
 
 export default function usersReducer(state = [], action) {
     switch (action.type) {

@@ -3,11 +3,11 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {getList, removeUser} from '../../actions/users';
+import {getUsers, removeUser} from '../../actions/users';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {UsersListRow} from '../../components/user/usersListRow';
-import ConfirmModal from '../../components/main/modals';
+import ConfirmModal from '../../components/main/confirmModals';
 import Paginate from '../../components/main/pagination';
 import RdTable from '../../components/main/rdTable';
 import {notify} from "../../actions/notification";
@@ -31,7 +31,7 @@ class Users extends Component {
     }
 
     componentWillMount() {
-        this.props.actions.getList({})
+        this.props.actions.getUsers({})
             .then(response => this.setState({users: response.payload}))
             .catch(err => console.log(err))
     }
@@ -74,7 +74,7 @@ class Users extends Component {
 
     onOrderBy(fieldName) {
         this.setState({orderBy: fieldName});
-        this.props.actions.getList({sort: fieldName});
+        this.props.actions.getUsers({sort: fieldName});
     }
 
     changePage(e) {
@@ -86,7 +86,7 @@ class Users extends Component {
     }
 
     onLimitChange(e) {
-        this.props.actions.getList({limit: e.target.value})
+        this.props.actions.getUsers({limit: e.target.value})
     }
 
     render() {
@@ -161,7 +161,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({getList, removeUser, notify}, dispatch)}
+    return {actions: bindActionCreators({getUsers, removeUser, notify}, dispatch)}
 
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
