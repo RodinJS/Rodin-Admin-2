@@ -22,7 +22,16 @@ class Module extends Component {
             showModal: false,
             moduleId: props.match.params.id,
             headerKeys: ['title', 'author', 'submitedDate', 'approvedDate', 'rejectedDate', 'createdAt', 'status'],
-            module: false,
+            module: {
+                title: '',
+                description: '',
+                author: '',
+                url: '',
+                status: 'Pending',
+                exampleLink: '',
+                documentationLink: '',
+                email: ''
+            },
             modalOptions: {
                 title: '',
                 body: '',
@@ -65,6 +74,7 @@ class Module extends Component {
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         const module = Object.assign({}, this.state.module, {[fieldName]: value});
         this.setState(Object.assign({}, this.state, {module}, {updated: {[fieldName]: value}}));
+        console.log(this)
     }
 
     handleRequestClose(param) {

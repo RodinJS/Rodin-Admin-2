@@ -50,8 +50,7 @@ class User extends Component {
     render() {
         let editUser;
         if (this.state.user) {
-            editUser =
-                <EditUser user={this.state.user} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange}/>;
+            editUser = <EditUser user={this.state.user} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange}/>;
         }
         return (<div>
             {editUser}

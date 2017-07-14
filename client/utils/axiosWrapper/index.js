@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const getCookie = function(name) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
-}
+    let value = "; " + document.cookie;
+    let parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+};
 
 const config = {
     baseURL: '/', // all requests are routed to /api/something....

@@ -77,7 +77,7 @@ const EditProject = ({project, onSubmit, onChange}) => {
             </fieldset>
         </form>
         </div>)
-}
+};
 EditProject.propTypes = {
     project: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,

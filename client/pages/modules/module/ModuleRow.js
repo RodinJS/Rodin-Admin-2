@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import moment from 'moment';
 
 export const ModuleListRow = ({module, onDelete}) => {
-    return (
+     return (
         <tr key={module.author}>
             <td>{<Link to={`/module/${module._id}`}>{module.title}</Link>}</td>
             <td>{module.author}</td>
