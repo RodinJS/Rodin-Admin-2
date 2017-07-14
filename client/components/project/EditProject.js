@@ -60,6 +60,7 @@ const EditProject = ({project, onSubmit, onChange}) => {
         return field;
     });
     return (
+        <div className="paperWrapper">
         <form className="form-horizontal" onSubmit={onSubmit} noValidate>
             <fieldset>
 
@@ -74,7 +75,8 @@ const EditProject = ({project, onSubmit, onChange}) => {
                     </div>
                 </div>
             </fieldset>
-        </form>)
+        </form>
+        </div>)
 }
 EditProject.propTypes = {
     project: PropTypes.object.isRequired,

@@ -77,8 +77,9 @@ class Modules extends Component {
 
         return (
             <div>
-                <Link className="btn btn-primary" to={'/module/create'}>Create + </Link>
-                <br/>
+                {/*<Link className="btn btn-primary" to={'/module/create'}>Create + </Link>*/}
+                {/*<br/>*/}
+                <h1>{this.props.route.name}</h1>
                 <div className="panel panel-default panel-table">
                     <div className="panel-heading">
                         <input type="text" className="form-control" placeholder="Search by Title"/>
