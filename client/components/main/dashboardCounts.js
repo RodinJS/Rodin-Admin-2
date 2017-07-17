@@ -12,12 +12,12 @@ export const DashboardCountsItem = (props) => {
         <div className="panel panel-primary">
             <div className="panel-heading">
                 <div className="row">
-                    <div className="col-xs-4 col-md-4 text-center">
+                    <div className="col-xs-12 col-md-12 text-center">
                         <i className={`fa ${icon} fa-5x`}/>
                         <p className="text-center">{props.type}</p>
                     </div>
 
-                    <div className="col-xs-4 col-md-4 text-right">
+                    <div className="col-xs-12 col-md-12 text-right">
                         {props.value ? props.value.map((val, key) => <p key={key}>{val.name}
                             - {val.count}</p>) : ''}
                     </div>
