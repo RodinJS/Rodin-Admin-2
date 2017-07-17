@@ -67,6 +67,7 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
 
     const renderActions = () => {
 
+        /** @namespace element.createdAt */
         if (element.createdAt) {
             return <div className="col-md-4">
                 <div className="btn-group pull-right">
@@ -104,4 +105,4 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
             </form>
         </div>
     )
-}
+};

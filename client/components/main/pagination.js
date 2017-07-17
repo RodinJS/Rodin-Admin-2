@@ -21,7 +21,6 @@ class Paginate extends Component {
     render() {
         let count = this.props.listLength / this.props.itemsPerPage;
         let items =(this.props.listLength % count) === 0 ? count : count + 1;
-        console.log(items)
         if(items < 2) {
             return <div/>
         }

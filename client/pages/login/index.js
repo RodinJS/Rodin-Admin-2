@@ -42,13 +42,14 @@ class Login extends Component {
                 this.props.history.push('/dashboard')
             })
             .catch(() => {
-                this.props.notify('error', {message: 'Adadad'})
+                this.props.notify('error', {message: 'Wrong username or password'});
             })
     }
 
     render() {
         return (
-                <div className="card card-container" style={{marginLeft: "500px"}}>
+            <div className="col-md-4 col-md-offset-4">
+                <div className="card card-container">
                     <form className="form-signin" onSubmit={this.login}>
                         <span id="reauth-email" className="reauth-email"/>
                         <input type="text"
@@ -67,17 +68,10 @@ class Login extends Component {
                                placeholder="Password"
                                onChange={this.onHandleChange}
                                required/>
-                        {/*<div id="remember" className="checkbox">*/}
-                            {/*<label>*/}
-                                {/*<input type="checkbox" value="remember-me"/> Remember me*/}
-                            {/*</label>*/}
-                        {/*</div>*/}
                         <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
                     </form>
-                    {/*<a href="#" className="forgot-password">*/}
-                        {/*Forgot the password?*/}
-                    {/*</a>*/}
                 </div>
+            </div>
         );
     }
 }
@@ -90,8 +84,7 @@ Login.contextTypes = {
     store: PropTypes.object
 };
 function mapStateToProps() {
-    return {
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {

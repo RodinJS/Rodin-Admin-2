@@ -9,7 +9,6 @@ import React from 'react'
 import {Link} from "react-router-dom";
 
 export const SideBar = (props) => {
-    console.log('asdada', props)
     return ( <div className="collapse navbar-collapse navbar-ex1-collapse">
         <ul className="nav navbar-nav side-nav">
             <li className="active">

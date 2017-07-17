@@ -5,7 +5,7 @@ import axiosInstance from '../utils/axiosWrapper/index';
 const rootURL = '/api/project';
 
 export function getProjects() {
-    return axiosInstance.get(`${rootURL}`);
+    return axiosInstance.get(`/api/admin/projects`);
 }
 
 export function getProject(id) {

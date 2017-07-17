@@ -22,7 +22,16 @@ class Module extends Component {
             showModal: false,
             moduleId: props.match.params.id,
             headerKeys: ['title', 'author', 'submitedDate', 'approvedDate', 'rejectedDate', 'createdAt', 'status'],
-            module: false,
+            module: {
+                title: '',
+                description: '',
+                author: '',
+                url: '',
+                status: 'Pending',
+                exampleLink: '',
+                documentationLink: '',
+                email: ''
+            },
             modalOptions: {
                 title: '',
                 body: '',
