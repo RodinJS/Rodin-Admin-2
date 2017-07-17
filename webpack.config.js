@@ -26,59 +26,30 @@ module.exports = {
     },
     module: {
         rules: [
+            // Javascript
             {
-                test: /\.js?/,
-                exclude: [
-                    path.resolve(__dirname, "node_modules")
-                ],
-                //enforce: "pre",
-                //enforce: "post",
-                loader: "babel-loader",
-                options: {
-                    presets: ["es2015", 'react'],
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ["es2015", 'react'],
+                        "plugins": ["transform-object-rest-spread"]
+                    }
                 },
             },
-            /*{
-                test: /\.scss$/,
-                use: [{
-                    loader: "style-loader" // creates style nodes from JS strings
-                }, {
-                    loader: "css-loader" // translates CSS into CommonJS
-                }, {
-                    loader: "sass-loader" // compiles Sass to CSS
-                }]
-            },*/
-            {
-                test: /\.svg$/,
-                loader: 'svg-inline-loader'
-            },
-            {
-                test: /\.scss$/,
-                exclude: [
-                    path.resolve(__dirname, "node_modules")
-                ],
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-
-                    // Could also be write as follow:
-                    // use: 'css-loader?modules&importLoader=2&sourceMap&localIdentName=[name]__[local]___[hash:base64:5]!sass-loader'
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            query: {
-                                modules: true,
-                                sourceMap: true,
-                                importLoaders: 2,
-                                localIdentName: '[name]__[local]___[hash:base64:5]'
-                            }
-                        },
-                        'sass-loader'
-                    ]
-                }),
-            },
+            // Stylesheets
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader?sourceMap!sass-loader?sourceMap'}) },
+            // Font Definitions
+            { test: /\.svg$/, loader: 'url-loader?limit=65000&mimetype=image/svg+xml&name=public/fonts/[name].[ext]' },
+            { test: /\.woff$/, loader: 'url-loader?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]' },
+            { test: /\.woff2$/, loader: 'url-loader?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name].[ext]' },
+            { test: /\.[ot]tf$/, loader: 'url-loader?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name].[ext]' },
+            { test: /\.eot$/, loader: 'url-loader?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name].[ext]' }
         ]
     },
     plugins: [
-        new ExtractTextPlugin("build/style.css"),
+        new ExtractTextPlugin("style.css"),
     ]
 };

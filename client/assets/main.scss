@@ -1,0 +1,16 @@
+$fa-font-path: "~font-awesome/fonts/";
+@import "~font-awesome/scss/font-awesome";
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "admin";
+@import "../pages/dashboard/dashboard";
+@import "../pages/users/users.scss";
+@import "../pages/login/login";
+@import "../pages/modules/modules";
+
+.paperWrapper{
+  padding: 80px;
+}
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}

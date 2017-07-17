@@ -1,3 +1,16 @@
-.paperWrapper{
-  padding: 30px;
+.hero-widget {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  .icon {
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  label {
+    font-size: 17px;
+  }
+  .options {
+    margin-top: 10px;
+  }
 }

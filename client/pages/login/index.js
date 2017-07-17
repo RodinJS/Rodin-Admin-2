@@ -1,28 +1,25 @@
 /**
  * Created by xgharibyan on 6/7/17.
  */
-import React from 'react';
-import axios from 'axios';
-import {render} from 'react-dom';
-import Button from 'material-ui/Button';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
-import logo from './images/logo.svg';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+import {login} from "../../actions/login";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
 
-import styles from './login.scss'
-
-
-class Login extends React.Component {
-    constructor(){
+class Login extends Component {
+    constructor() {
         super();
         this.state = {
-            username:'',
-            password:''
+            username: '',
+            password: ''
         };
         this.setCookie = this.setCookie.bind(this);
+        this.onHandleChange = this.onHandleChange.bind(this);
+        this.login = this.login.bind(this);
+
     }
 
     setCookie(name, value, days = 7, path = '/') {
@@ -30,48 +27,75 @@ class Login extends React.Component {
         document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path
     }
 
-    login(){
-        console.log(this.state);
-        axios.post('/api/auth/login', {username:this.state.username, password:this.state.password})
-            .then(response=>{
-                this.setCookie('token', response.data.token);
-                return window.location.href = '/modules';
+    onHandleChange(e) {
+        let fieldName = e.target.name;
+        let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        this.setState({[fieldName]: value});
+    }
+
+    login(e) {
+        e.preventDefault();
+        this.props.actions.login({username: this.state.username, password: this.state.password})
+            .then(response => {
+                this.setCookie('token', response.payload.token);
+                localStorage.setItem('token', JSON.stringify(response.payload.token));
+                this.props.history.push('/dashboard')
             })
-            .catch(err=>{
-                console.log('err', err);
+            .catch(() => {
+                this.props.notify('error', {message: 'Adadad'})
             })
     }
 
-    render () {
-
+    render() {
         return (
-            <div>
-                <Grid container
-                      align="center"
-                      direction="row"
-                      justify="center">
-                    <Grid item xs={6}>
-                        <div className={styles.paperWrapper}>
-                            <TextField
-                                id="email"
-                                label="email"
-                                value={this.state.email}
-                                onChange={event => this.setState({ username: event.target.value })}
-                            />
-                            <TextField
-                                id="password"
-                                label="password"
-                                type="password"
-                                value={this.state.password}
-                                onChange={event => this.setState({ password: event.target.value })}
-                            />
-                            <Button raised primary onClick={(e)=> this.login()}>Login</Button>
-                        </div>
-                    </Grid>
-                </Grid>
-            </div>
+                <div className="card card-container" style={{marginLeft: "500px"}}>
+                    <form className="form-signin" onSubmit={this.login}>
+                        <span id="reauth-email" className="reauth-email"/>
+                        <input type="text"
+                               id="inputEmail"
+                               className="form-control"
+                               name="username"
+                               value={this.state.username}
+                               onChange={this.onHandleChange}
+                               placeholder="Username"
+                               required autoFocus/>
+                        <input type="password"
+                               id="inputPassword"
+                               className="form-control"
+                               name="password"
+                               value={this.state.password}
+                               placeholder="Password"
+                               onChange={this.onHandleChange}
+                               required/>
+                        {/*<div id="remember" className="checkbox">*/}
+                            {/*<label>*/}
+                                {/*<input type="checkbox" value="remember-me"/> Remember me*/}
+                            {/*</label>*/}
+                        {/*</div>*/}
+                        <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                    </form>
+                    {/*<a href="#" className="forgot-password">*/}
+                        {/*Forgot the password?*/}
+                    {/*</a>*/}
+                </div>
         );
     }
 }
 
-export default Login;
+Login.propTypes = {
+    actions: PropTypes.object.isRequired
+};
+Login.contextTypes = {
+    router: PropTypes.object.isRequired,
+    store: PropTypes.object
+};
+function mapStateToProps() {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {actions: bindActionCreators({login}, dispatch)}
+
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
