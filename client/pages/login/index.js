@@ -48,7 +48,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="col-md-4 col-md-offset-4">
+            <div className="col-md-3 col-md-offset-4">
                 <div className="card card-container">
                     <form className="form-signin" onSubmit={this.login}>
                         <span id="reauth-email" className="reauth-email"/>

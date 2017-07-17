@@ -34,8 +34,8 @@ export function getProject(id) {
 }
 
 
-export function removeProject(id) {
-    return dispatch => request.removeProject(id)
+export function removeProject(owner, id) {
+    return dispatch => request.removeProject(owner,id)
         .then((res) =>dispatch({type: types.REMOVE_PROJECT, payload: res.data, key: id}))
 }
 
