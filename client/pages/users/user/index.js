@@ -17,6 +17,7 @@ class User extends Component {
             param: props.match.params.username,
             updated: {}
         };
+        console.log('aaaaaaaaaaaaaa')
         this.handleChange = this.handleChange.bind(this);
     }
 

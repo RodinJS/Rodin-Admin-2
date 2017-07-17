@@ -9,7 +9,6 @@ import {render} from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import BrowserRouter from "react-router-dom/BrowserRouter";
 import {Provider} from 'react-redux';
-import {MuiThemeProvider} from 'material-ui/styles';
 import {renderRoutes} from 'react-router-config'
 import configStore from "./store/configStore";
 const store = configStore();
@@ -42,7 +41,9 @@ const Root = ({route}) => {
         </div>
     )
 };
-
+function onEnter(store) {
+    console.log(store)
+}
 const routes = [{
     component: Root,
     routes: [
@@ -53,7 +54,8 @@ const routes = [{
         },
         {
             path: '/login',
-            component: Login
+            component: Login,
+            onEnter: onEnter(store)
         },
         {
             path: '/module/:id',
@@ -92,11 +94,9 @@ class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <MuiThemeProvider>
                     <BrowserRouter >
                         {renderRoutes(routes)}
                     </BrowserRouter>
-                </MuiThemeProvider>
             </Provider>
         );
     }

@@ -74,7 +74,6 @@ class Module extends Component {
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         const module = Object.assign({}, this.state.module, {[fieldName]: value});
         this.setState(Object.assign({}, this.state, {module}, {updated: {[fieldName]: value}}));
-        console.log(this)
     }
 
     handleRequestClose(param) {
