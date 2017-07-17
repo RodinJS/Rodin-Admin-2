@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./server/bin/www",
+    "start": "export PORT=7000; webpack -p; node ./server/index.js",
     "dev": "webpack -d --watch",
     "build": "webpack -p"
   },
