@@ -41,9 +41,7 @@ const Root = ({route}) => {
         </div>
     )
 };
-function onEnter(store) {
-    console.log(store)
-}
+
 const routes = [{
     component: Root,
     routes: [
@@ -55,7 +53,7 @@ const routes = [{
         {
             path: '/login',
             component: Login,
-            onEnter: onEnter(store)
+            onChange: (a)=> console.log(a)
         },
         {
             path: '/module/:id',

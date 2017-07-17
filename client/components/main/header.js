@@ -11,11 +11,19 @@ import {isEmpty} from "lodash";
 import {SideBar} from "./SideBar";
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.logout = this.logout.bind(this);
+        this.state = {
+            activePath: context.router.route.location.pathname
+        }
     }
 
+    componentDidMount() {
+        this.context.router.history.listen((location, action) => {
+            this.setState({activePath: location.pathname})
+        });
+    }
     logout() {
         this.props.actions.logOut()
             .then(() => {
@@ -28,7 +36,7 @@ class Header extends Component {
     render() {
         let signOut;
         if (this.props.isAuth) {
-            signOut = (<SideBar logout={this.logout}/>)
+            signOut = (<SideBar path= {this.state.activePath} logout={this.logout}/>)
         }
         return <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div className="navbar-header">

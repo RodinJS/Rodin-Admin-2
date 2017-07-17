@@ -67,7 +67,7 @@ class Projects extends Component {
     }
 
     onDelete() {
-        this.props.actions.removeProject(this.state.activeProject._id)
+        this.props.actions.removeProject(this.state.activeProject.owner, this.state.activeProject._id)
             .then(() => {
                 this.props.actions.notify('success', {message: 'Successfully deleted'});
                 this.setState({showModal: false});

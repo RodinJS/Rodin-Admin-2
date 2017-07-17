@@ -27,7 +27,6 @@ class Users extends Component {
         this.onDelete = this.onDelete.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onLimitChange = this.onLimitChange.bind(this);
-        console.log(this)
     }
 
     componentWillMount() {
