@@ -11,6 +11,11 @@ import ConfirmModal from '../../components/main/confirmModals';
 import Paginate from '../../components/main/pagination';
 import RdTable from '../../components/main/rdTable';
 import {notify} from "../../actions/notification";
+import queryString from "query-string";
+import {OrderBy} from "../../actions/queryActions";
+import {updateQueryString} from "../../utils/index"
+import {USER_ORDER_BY} from "../../constants/index";
+
 
 class Users extends Component {
     constructor(props) {
@@ -18,27 +23,69 @@ class Users extends Component {
         this.state = {
             headerKeys: ['Email', 'Username', 'Role', 'StorageSize', 'Allow projects count', 'Created at', 'Edit', 'Remove'],
             showModal: false,
-            currentPage: 1,
-            itemsPerPage: 10,
+            itemsPerPage: 50,
             searchString: '',
-            orderBy: '-createdAt',
-            limits: [50,100,150]
+            orderBy: {fieldName:'created at', type: 'asc'},
+            users: [],
+            query: queryString.parse(this.props.location.search)
         };
         this.onDelete = this.onDelete.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.onLimitChange = this.onLimitChange.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.renderPagination = this.renderPagination.bind(this);
+        this.onSearch = this.onSearch.bind(this);
     }
 
-    componentWillMount() {
-        this.props.actions.getUsers({})
-            .then(response => this.setState({users: response.payload}))
-            .catch(err => console.log(err))
+    componentDidMount() {
+        this.props.actions.getUsers({
+            page: this.state.query.page ? this.state.query.page : 1
+        });
     }
-
 
     componentWillReceiveProps(nextProps) {
-        if (!this.state.users !== nextProps.users) {
-            this.setState({users: nextProps.users})
+        if (nextProps.location !== this.props.location) {
+            this.setState({query: queryString.parse(nextProps.location.search)});
+        }
+        if (this.props.users !== nextProps.users.docs) {
+            this.setState({
+                users: nextProps.users.docs,
+                total: nextProps.users.total,
+                activePage: this.state.query.page,
+                pages: nextProps.users.pages
+            });
+        }
+    }
+
+    renderUsers() {
+        if (this.state.users.length > 0) {
+            let filtered = this.state.users.filter((u) => u.username.indexOf(this.state.searchString) !== -1);
+            const current = filtered.slice(0, 50);
+            return current.map((value, key) => <UsersListRow key={key} user={value}
+                                                             onDelete={this.openModal.bind(this, value)}/>)
+        }
+
+    }
+
+    renderRows() {
+        if (this.state.users && this.state.users.length > 0) {
+            return <RdTable options={{
+                headerKeys: this.state.headerKeys,
+                data: this.state.users,
+                rows: this.renderUsers.bind(this),
+                order: {
+                    orderByField: ['email', 'username','created at'],
+                    orderBy: this.state.orderBy,
+                    onOrderBy: this.onOrderBy.bind(this)
+                }
+            }}/>;
+        }
+    }
+
+    renderPagination() {
+        if (this.state.users && this.state.users.length > 0) {
+            return <Paginate name={"users"} itemsPerPage={this.state.itemsPerPage} activePage={Number(this.state.activePage)}
+                             total={this.state.total} pages = {this.state.pages}
+                             onPageChange={(e) => this.changePage(e)}/>;
         }
     }
 
@@ -50,14 +97,6 @@ class Users extends Component {
         this.setState({showModal: true, activeUser: user});
     }
 
-    renderUsers() {
-        const indexOfLast = this.state.currentPage * 10;
-        const indexOfFirst = indexOfLast - 10;
-        let filtered = this.state.users.filter((u) => u.username.indexOf(this.state.searchString) !== -1);
-        const current = filtered.slice(indexOfFirst, indexOfLast);
-        return current.map((value, key) => <UsersListRow key={key} user={value}
-                                                         onDelete={this.openModal.bind(this, value)}/>)
-    }
 
 
     onDelete() {
@@ -71,41 +110,22 @@ class Users extends Component {
             })
     }
 
-    onOrderBy(fieldName) {
-        this.setState({orderBy: fieldName});
-        this.props.actions.getUsers({sort: fieldName});
+    onOrderBy(fieldName, type) {
+        this.setState({orderBy: {fieldName: fieldName, type: type}});
+        this.props.actions.OrderBy(USER_ORDER_BY,{fieldName: fieldName, type: type});
     }
 
     changePage(e) {
-        this.setState({currentPage: e});
+        this.context.router.history.replace(updateQueryString('page', e, this.props));
+        this.setState({activePage: e});
+        this.props.actions.getUsers({page: e});
     }
 
     onSearch(e) {
         this.setState({searchString: e.target.value});
     }
 
-    onLimitChange(e) {
-        this.props.actions.getUsers({limit: e.target.value})
-    }
-
     render() {
-        let table, pagination;
-        if (this.state.users && this.state.users.length > 0) {
-            table = <RdTable options={{
-                headerKeys: this.state.headerKeys,
-                data: this.state.users,
-                rows: this.renderUsers.bind(this),
-                order: {
-                    orderByField: ['email', 'username'],
-                    orderBy: this.state.orderBy,
-                    onOrderBy: this.onOrderBy.bind(this)
-                }
-
-            }}/>;
-            pagination = <Paginate itemsPerPage={this.state.itemsPerPage} listLength={this.state.users.length}
-                                   onPageChange={(e) => this.changePage(e)}/>;
-        }
-
         let modalOptions = {
             title: 'Delete User',
             body: `Delete User ${this.state.activeUser ? this.state.activeUser.username : ''}`,
@@ -113,10 +133,9 @@ class Users extends Component {
             buttonText: 'Delete',
             onSubmit: this.onDelete,
         };
-
         return (
             <div>
-                <h1>{this.props.route.name}</h1>
+                <h1>Users</h1>
                 <ConfirmModal show={this.state.showModal} onClose={this.onClose} options={modalOptions}/>
                 <div className="panel panel-default panel-table">
                     <div className="panel-heading">
@@ -126,17 +145,13 @@ class Users extends Component {
                                        onChange={(e) => this.onSearch(e)} placeholder="Search by Username"/>
                             </div>
                             <div className="col-md-3">
-                                <select className="form-control" name="role"
-                                        onChange={this.onLimitChange}>
-                                    {this.state.limits.map((limit, key) => <option value={limit} key={key}>{limit}</option>)}
-                                </select>
                             </div>
                         </div>
                     </div>
-                    {table}
+                    {this.renderRows()}
                     <div className="panel-footer">
                         <div className="row text-center">
-                            {pagination}
+                            {this.renderPagination()}
                         </div>
                     </div>
                 </div>
@@ -147,20 +162,23 @@ class Users extends Component {
 
 Users.propTypes = {
     actions: PropTypes.object.isRequired,
-    key: PropTypes.number
+    key: PropTypes.number,
 };
 Users.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
+
 function mapStateToProps(state) {
     return {
         users: state.usersReducer,
+        location: state.routerReducer.location
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({getUsers, removeUser, notify}, dispatch)}
+    return {actions: bindActionCreators({getUsers, OrderBy, removeUser, notify}, dispatch)}
 
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

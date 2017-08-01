@@ -5,11 +5,11 @@ import axiosInstance from '../utils/axiosWrapper/index';
 
 const rootURL = '/api/admin/user';
 
-export function getUsers({sort ='-createdAt', limit = 50}) {
+export function getUsers({sort, page = 1}) {
     return axiosInstance.get(`${rootURL}` , {
         params:{
             sort,
-            limit
+            page
         }
     });
 }

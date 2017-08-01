@@ -28,7 +28,6 @@ class RejectDialog extends React.Component {
                 this.setState({message:{success:true, data:'Module rejected'}})
             })
             .catch(err => {
-                console.log('err', err);
                 this.setState({message:{success:false, data:'Whoops matrix overloaded'}})
             })
     }

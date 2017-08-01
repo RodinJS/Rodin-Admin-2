@@ -11,6 +11,9 @@ import RdTable from '../../components/main/rdTable';
 import {notify} from "../../actions/notification";
 import {getProjects, removeProject} from "../../actions/projects";
 import {ProjectListRow} from "../../components/project/projectListRow";
+import queryString from "query-string";
+import {OrderBy} from "../../actions/queryActions";
+import {PROJECTS_ORDER_BY} from "../../constants/index";
 
 class Projects extends Component {
     constructor(props) {
@@ -18,48 +21,90 @@ class Projects extends Component {
         this.state = {
             headerKeys: ['displayName', 'name', 'state', 'owner', 'desciption', 'public', 'templateOf', 'createdAt', 'Edit', 'Delete'],
             itemsPerPage: 10,
-            currentPage: 1,
+            activePage: 1,
             searchString: '',
             showModal: false,
-            orderBy: '-createdAt',
+            orderBy: {fieldName: 'created at', type: 'asc'},
+            projects: [],
+            query: queryString.parse(this.props.history.location.search)
 
         };
-
         this.onDelete = this.onDelete.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.renderRows = this.renderRows.bind(this);
+        this.renderPagination = this.renderPagination.bind(this);
+        this.onSearch = this.onSearch.bind(this);
     }
 
-    onOrderBy(fieldName) {
-        this.setState({orderBy: fieldName});
-        this.props.actions.getProjects({sort: fieldName});
+
+    componentDidMount() {
+        this.props.actions.getProjects({
+            page: this.state.query.page ? this.state.query.page : 1
+        })
+
     }
 
-    openModal(project) {
-        this.setState({showModal: true, activeProject: project});
-    }
-
-    componentWillMount() {
-        this.props.actions.getProjects({})
-            .then(response => this.setState({projects: response.payload}))
-            .catch(err => console.log(err))
-    }
-
-    changePage(e) {
-        this.setState({currentPage: e});
-    }
     componentWillReceiveProps(nextProps) {
-        if (!this.state.projects !== nextProps.projects) {
-            this.setState({projects: nextProps.projects})
+        if (nextProps.location !== this.props.location) {
+            this.setState({query: queryString.parse(nextProps.location.search)});
+        }
+        if (this.state.projects !== nextProps.projects.docs) {
+            this.setState({
+                projects: nextProps.projects.docs,
+                total: nextProps.projects.total,
+                activePage: this.state.query.page,
+                pages: nextProps.pages
+            });
         }
     }
 
     renderProjects() {
-        const indexOfLast = this.state.currentPage * 10;
-        const indexOfFirst = indexOfLast - 10;
-        let filtered = this.state.projects.filter((u) => u.displayName.indexOf(this.state.searchString) !== -1);
-        const current = filtered.slice(indexOfFirst, indexOfLast);
-        return current.map((value, key) => <ProjectListRow key={key} project={value}
-                                                           onDelete={this.openModal.bind(this, value)}/>)
+        if (this.state.projects.length > 0) {
+            let filtered = this.state.projects.filter((u) => u.displayName.indexOf(this.state.searchString) !== -1);
+            const current = filtered.slice(0, 50);
+            return current.map((value, key) => <ProjectListRow key={key} project={value}
+                                                               onDelete={this.openModal.bind(this, value)}/>)
+        }
+
+    }
+
+    renderRows() {
+        if (this.state.projects && this.state.projects.length > 0) {
+            return <RdTable options={{
+                headerKeys: this.state.headerKeys,
+                data: this.state.projects,
+                rows: this.renderProjects.bind(this),
+                order: {
+                    orderByField: ['name', 'owner'],
+                    orderBy: this.state.orderBy,
+                    onOrderBy: this.onOrderBy.bind(this)
+                }
+            }}/>;
+        }
+    }
+
+    renderPagination() {
+        if (this.state.projects && this.state.projects.length > 0) {
+
+            return <Paginate name={"projects"} itemsPerPage={this.state.itemsPerPage} activePage={Number(this.state.activePage)}
+                             total={this.state.total} pages={this.state.pages}
+                             onPageChange={(e) => this.changePage(e)}/>;
+        }
+    }
+
+    changePage(e) {
+        this.context.router.history.push({search: `page=${e}`});
+        this.setState({activePage: e});
+    }
+
+    onOrderBy(fieldName) {
+        this.setState({orderBy: {fieldName: fieldName, type: type}});
+        this.props.actions.OrderBy(PROJECTS_ORDER_BY, {fieldName: fieldName, type: type});
+    }
+
+    openModal(project) {
+        this.setState({showModal: true, activeProject: project});
     }
 
     onSearch(e) {
@@ -80,22 +125,8 @@ class Projects extends Component {
     onClose() {
         this.setState({showModal: false});
     }
+
     render() {
-        let table, pagination;
-        if (this.state.projects && this.state.projects.length > 0) {
-            table = <RdTable options={{
-                headerKeys: this.state.headerKeys,
-                data: this.state.projects,
-                rows: this.renderProjects.bind(this),
-                order:{
-                    orderByField: ['name', 'owner'],
-                    orderBy: this.state.orderBy,
-                    onOrderBy: this.onOrderBy.bind(this)
-                }
-            }}/>;
-            pagination = <Paginate itemsPerPage={this.state.itemsPerPage} listLength={this.state.projects.length}
-                                   onPageChange={(e) => this.changePage(e)}/>;
-        }
         let modalOptions = {
             title: 'Delete Project',
             body: `Delete Project`,
@@ -105,7 +136,7 @@ class Projects extends Component {
         };
         return (
             <div>
-                <h1>{this.props.route.name}</h1>
+                <h1>Projects</h1>
                 <ConfirmModal show={this.state.showModal} onClose={this.onClose} options={modalOptions}/>
                 <div className="panel panel-default panel-table">
                     <div className="panel-heading">
@@ -114,18 +145,12 @@ class Projects extends Component {
                                 <input type="text" className="form-control" name="searchString"
                                        onChange={(e) => this.onSearch(e)} placeholder="Search by Project display name"/>
                             </div>
-                            {/*<div className="col-md-3">*/}
-                            {/*<select className="form-control" name="role"*/}
-                            {/*onChange={this.onLimitChange}>*/}
-                            {/*{this.state.limits.map((limit, key) => <option value={limit} key={key}>{limit}</option>)}*/}
-                            {/*</select>*/}
-                            {/*</div>*/}
                         </div>
                     </div>
-                    {table}
+                    {this.renderRows()}
                     <div className="panel-footer">
                         <div className="row text-center">
-                            {pagination}
+                            {this.renderPagination()}
                         </div>
                     </div>
                 </div>
@@ -142,6 +167,7 @@ Projects.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
+
 function mapStateToProps(state) {
     return {
         projects: state.projectsReducer,
@@ -149,7 +175,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({getProjects, removeProject, notify}, dispatch)}
+    return {actions: bindActionCreators({getProjects, OrderBy, removeProject, notify}, dispatch)}
 
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Projects);

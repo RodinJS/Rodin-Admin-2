@@ -52,6 +52,7 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
     });
 
     let rejectReason = <div style={{padding: '20px'}}>
+        <h3>Reject Reason</h3>
         <div className="form-group">
                 <textarea defaultValue=""
                           className="form-control"
@@ -82,6 +83,10 @@ export const ModuleElement = ({module, onSubmit, onAction, onChange}) => {
                     <button type="button" className="btn btn-danger" onClick={() => {
                         onAction('danger', 'Delete Module', 'onDelete', `Delete Module ${element.title}`)
                     }}>Delete
+                    </button>
+                    <button type="button" className="btn btn-warning" onClick={() => {
+                        onAction('warning', 'Reset Changes', 'onReset', `Reset Changes`)
+                    }}>Reset
                     </button>
                 </div>
             </div>

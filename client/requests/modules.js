@@ -4,11 +4,11 @@
 import axiosInstance from '../utils/axiosWrapper/index';
 
 export function getModules() {
-    return axiosInstance.get('/api/modules/');
+    return axiosInstance.get('/api/admin/modules');
 }
 
 export function getModule(moduleId) {
-    return axiosInstance.get(`/api/modules/${moduleId}`);
+    return axiosInstance.get(`/api/admin/modules/${moduleId}`);
 }
 
 export function onReject(data) {

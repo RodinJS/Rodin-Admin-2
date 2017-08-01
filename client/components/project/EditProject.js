@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import _map from "lodash/map";
 import Moment  from 'moment';
 
-const EditProject = ({project, onSubmit, onChange}) => {
+const EditProject = ({project, onSubmit, onChange, onReset}) => {
     let options = {
         state: ['pending', 'approved']
     };
@@ -71,7 +71,10 @@ const EditProject = ({project, onSubmit, onChange}) => {
                 <div className="form-group">
                     <label className="col-md-4 control-label"/>
                     <div className="col-md-4">
-                        <button type="submit" name="save" className="btn btn-primary">Save</button>
+                        <div className="btn-group">
+                            <button type="submit" name="save" className="btn btn-primary">Save</button>
+                            <button type="submit" name="save" className="btn btn-warning" onClick={onReset}>Reset</button>
+                        </div>
                     </div>
                 </div>
             </fieldset>
