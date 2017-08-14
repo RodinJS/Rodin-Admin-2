@@ -98,7 +98,7 @@ class Projects extends Component {
         this.setState({activePage: e});
     }
 
-    onOrderBy(fieldName) {
+    onOrderBy(fieldName, type) {
         this.setState({orderBy: {fieldName: fieldName, type: type}});
         this.props.actions.OrderBy(PROJECTS_ORDER_BY, {fieldName: fieldName, type: type});
     }

@@ -24,11 +24,12 @@ class Header extends Component {
             this.setState({activePath: location.pathname})
         });
     }
+
     logout() {
         this.props.actions.logOut()
             .then(() => {
                 localStorage.removeItem('token');
-                this.context.router.history.push('/')
+                this.context.router.history.push('/login')
             })
             .catch((e) => console.log(e))
     }

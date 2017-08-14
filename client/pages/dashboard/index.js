@@ -9,7 +9,7 @@ import {getCounts} from "../../actions/main";
 import {DashboardCountsItem} from "../../components/main/dashboardCounts";
 
 
-class Dashboard extends Component {
+class Home extends Component {
     constructor() {
         super();
         this.state = {
@@ -29,38 +29,39 @@ class Dashboard extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <div className="row">
-                    <div className="col-lg-12">
-                        <h1 className="page-header">
-                            Dashboard
-                        </h1>
-                        <ol className="breadcrumb">
-                            <li className="active">
-                                <i className="fa fa-dashboard"/> Dashboard
-                            </li>
-                        </ol>
-                    </div>
+        return (<div>
+            <div className="row">
+                <div className="col-lg-12">
+                    <h1 className="page-header">
+                        Dashboard
+                    </h1>
+                    <ol className="breadcrumb">
+                        <li className="active">
+                            <i className="fa fa-dashboard"/> Dashboard
+                        </li>
+                    </ol>
                 </div>
-                {this.renderCountSections()}
             </div>
-        );
+            {this.renderCountSections()}
+        </div>)
     }
 }
 
-Dashboard.propTypes = {
+Home.propTypes = {
     actions: PropTypes.object.isRequired
 };
-Dashboard.contextTypes = {
+Home.contextTypes = {
     router: PropTypes.object.isRequired,
     store: PropTypes.object
 };
+
 function mapStateToProps() {
     return {}
 }
+
 function mapDispatchToProps(dispatch) {
     return {actions: bindActionCreators({getCounts}, dispatch)}
 
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

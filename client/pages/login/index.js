@@ -10,8 +10,8 @@ import {connect} from "react-redux";
 
 
 class Login extends Component {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         this.state = {
             username: '',
             password: ''
@@ -19,7 +19,9 @@ class Login extends Component {
         this.setCookie = this.setCookie.bind(this);
         this.onHandleChange = this.onHandleChange.bind(this);
         this.login = this.login.bind(this);
-
+        if(!!(localStorage.getItem('token'))) {
+            context.history.push('/dashboard')
+        }
     }
 
     setCookie(name, value, days = 7, path = '/') {
@@ -48,7 +50,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="col-md-3 col-md-offset-4">
+            <div className="col-md-4 col-md-offset-4">
                 <div className="card card-container">
                     <form className="form-signin" onSubmit={this.login}>
                         <span id="reauth-email" className="reauth-email"/>

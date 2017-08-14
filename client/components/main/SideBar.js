@@ -13,25 +13,25 @@ export const SideBar = (props) => {
         <ul className="nav navbar-nav side-nav">
             <li className={props.path === '/dashboard' ? "active":""}>
                 <Link to={{
-                    pathname: '/dashboard',
+                    pathname: '/dashboard/',
                     search: '?page=1',
                 }}><i className="fa fa-fw fa-dashboard"/> Dashboard</Link>
             </li>
             <li className={props.path === '/users' ? "active":""}>
                 <Link to={{
-                    pathname: '/users',
+                    pathname: '/dashboard/users',
                     search: '?page=1',
                 }}><i className="fa fa-fw fa-users"/> Users</Link>
             </li>
             <li className={props.path === '/projects' ? "active":""}>
                 <Link to={{
-                    pathname: '/projects',
+                    pathname: '/dashboard/projects',
                     search: '?page=1',
                 }}><i className="fa fa-fw fa-file"/> Projects</Link>
             </li>
             <li className={props.path === '/modules' ? "active":""}>
                 <Link to={{
-                    pathname: '/modules',
+                    pathname: '/dashboard/modules',
                     search: '?page=1',
                 }}><i className="fa fa-fw fa-file-code-o"/> Modules</Link>
             </li>
