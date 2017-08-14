@@ -25,10 +25,10 @@ class RdTable extends Component {
                 if (this.props.options.order && orderByField.indexOf(key.toLowerCase()) !== -1) {
                     return <th key={k}>{key}
                         <span className="pull-right">
-                        <i className={`fa ${orderBy[0] === '-' ? 'fa-sort-asc' : 'fa-sort-desc'}`}
+                        <i className={`fa ${orderBy.type === 'asc' ? 'fa-sort-desc' : 'fa-sort-asc'}`}
                            aria-hidden="true"
-                           onClick={() => {
-                               onOrderBy(orderBy[0] === '-' ? key.toLowerCase() : `-${key.toLowerCase()}`)
+                           onClick={(e) => {
+                               onOrderBy(key, orderBy.type === 'asc' ? 'desc' : 'asc')
                            }
                            }/>
         </span></th>

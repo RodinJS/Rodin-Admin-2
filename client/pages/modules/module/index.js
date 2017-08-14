@@ -7,13 +7,11 @@ import axios from '../../../utils/axiosWrapper/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-//Material UI elements
 import {ModuleElement} from '../../../components/module/index';
 import {getModule} from "../../../actions/modules";
 import {notify} from "../../../actions/notification";
 import {isEqual} from "lodash";
 import ConfirmModal from '../../../components/main/confirmModals';
-
 
 class Module extends Component {
     constructor(props) {
@@ -39,17 +37,19 @@ class Module extends Component {
                 buttonText: '',
                 onSubmit: null,
             },
-            rejectReason: ''
+            rejectReason: '',
+            type: 'create'
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
-        this.updateModule = this.updateModule.bind(this);
-        this.createModule = this.createModule.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.onClose = this.onClose.bind(this);
         this.openDialog = this.openDialog.bind(this);
         this.onReject = this.onReject.bind(this);
         this.onApprove = this.onApprove.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.onReset = this.onReset.bind(this);
     }
 
     onDelete() {
@@ -81,8 +81,12 @@ class Module extends Component {
             return this.props.callbackParent()
     }
 
-    createModule(e) {
-        e.preventDefault();
+    onReset() {
+        this.setState({updated:null, module: this.props.module, showModal: false});
+        this.props.actions.notify('success', {message: 'Changes was resetting'});
+    }
+
+    onSave() {
         axios.post('/api/modules/', this.state.module)
             .then(response => this.handleRequestClose())
             .catch(err => {
@@ -90,13 +94,18 @@ class Module extends Component {
             })
     }
 
-    updateModule(e) {
-        e.preventDefault();
+    onUpdate() {
         axios.put('/api/modules/', this.state.updated)
             .then(response => this.handleRequestClose())
             .catch(err => {
                 console.log('err', err);
             })
+    }
+
+    onAction(e) {
+        e.preventDefault();
+        this.openDialog('success', this.state.moduleId === 'create' ? 'Create module': 'Update module', this.state.moduleId === 'create' ? 'onSave': 'onUpdate','Are you sure ?', 'Save')
+
     }
 
     onApprove() {
@@ -145,7 +154,7 @@ class Module extends Component {
         let module;
         if (this.state.moduleId === 'create' || this.state.module) {
             module = <ModuleElement module={this.state.module} onChange={this.handleChange}
-                                    onSubmit={this.state.moduleId === 'create' ? this.createModule : this.updateModule}
+                                    onSubmit={this.onAction.bind(this)}
                                     onAction={this.openDialog}/>;
         }
 

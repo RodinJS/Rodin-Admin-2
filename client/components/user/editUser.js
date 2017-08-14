@@ -6,14 +6,16 @@ import PropTypes from 'prop-types'
 import Moment  from 'moment';
 import _map from "lodash/map";
 
-const EditUser = ({user, onSubmit, onChange}) => {
+const EditUser = ({user, onSubmit, onChange, onReset}) => {
     let options = {
         role: ['Free', 'Premium', 'Enterprise', 'Admin', 'God'],
         allowProjectsCount: [2, 5, 10],
         storageSize: [100, 1000, 5000],
         type: ['User', 'Organization']
     };
+
     let selectOptions = ['role', 'allowProjectsCount', 'storageSize', 'type'];
+
     let inputFields = _map(user, (val, key) => {
         val = val ? val.toString() : '';
         let field = '';
@@ -46,7 +48,7 @@ const EditUser = ({user, onSubmit, onChange}) => {
                             <input className="form-control" name={key}
                                    value={["createdAt", "updatedAt"].some(i => i === key) ? Moment(val).format('MMMM Do YYYY, h:mm:ss a') : val}
                                    type="text"
-                                   disabled={["createdAt", "updatedAt"].some(i => i === key)}
+                                   disabled={["createdAt", "updatedAt", "username"].some(i => i === key)}
                                    onChange={onChange}/>
                         </div>
                     </div> : null;
@@ -55,16 +57,19 @@ const EditUser = ({user, onSubmit, onChange}) => {
 
         return field;
     });
+
     return (<div className="paperWrapper">
             <form className="form-horizontal" onSubmit={onSubmit} noValidate>
                 <fieldset>
-
                     <legend>User Info</legend>
                     {inputFields}
                     <div className="form-group">
                         <label className="col-md-4 control-label"/>
                         <div className="col-md-4">
-                            <button type="submit" name="save" className="btn btn-primary">Save</button>
+                            <div className="btn-group">
+                                <button type="submit" name="save" className="btn btn-primary">Save</button>
+                                <button type="submit" name="save" className="btn btn-warning" onClick={onReset}>Reset</button>
+                            </div>
                         </div>
                     </div>
                 </fieldset>

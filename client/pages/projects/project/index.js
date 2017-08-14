@@ -9,14 +9,24 @@ import {isEqual} from "lodash";
 import {notify} from "../../../actions/notification";
 import {getProject, updateProject} from "../../../actions/projects";
 import EditProject from "../../../components/project/EditProject";
+import ConfirmModal from "../../../components/main/confirmModals";
 
 class Project extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            param: props.match.params.projectId
+            param: props.match.params.projectId,
+            showModal: false,
+            modalOptions: {
+                title: 'Update Project',
+                body: `Are you sure?`,
+                type: 'success',
+                buttonText: 'Update',
+                onSubmit: this.onUpdate.bind(this),
+            }
         };
         this.handleChange = this.handleChange.bind(this);
+        this.onStateReset = this.onStateReset.bind(this);
     }
 
     componentDidMount() {
@@ -36,19 +46,51 @@ class Project extends Component {
         this.setState(Object.assign({}, this.state, {project}, {updated: {[fieldName]: value}}));
     }
 
+    onUpdate() {
+        this.props.actions.updateProject(this.state.param, this.state.updated)
+            .then(() => {
+                this.props.actions.notify('success', {message: "User Updated"});
+                this.setState({showModal: false});
+            })
+            .catch((err) => this.props.actions.notify('error', {message: err.response.data.error.message}))
+    }
+
+    onStateReset(e) {
+        e.preventDefault();
+        this.setState({
+            showModal: true, modalOptions: {
+                title: 'Reset changes',
+                body: `Are you sure?`,
+                type: 'warning',
+                buttonText: 'Reset',
+                onSubmit: this.onReset.bind(this),
+            }
+        });
+    }
+
+    onReset() {
+        this.setState({updated: null, project: this.props.project, showModal: false});
+        this.props.actions.notify('success', {message: 'Changes was resetting'})
+    }
+
     onSubmit(e) {
         e.preventDefault();
-        this.props.actions.updateProject(this.state.param, this.state.updated)
-            .then((res) => this.props.actions.notify('success', {message: "User Updated"}))
-            .catch((err) => this.props.actions.notify('error', {message: err.response.data.error.message}))
+        this.setState({showModal: true,  modalOptions: {
+            title: 'Update Project',
+            body: `Are you sure?`,
+            type: 'success',
+            buttonText: 'Update',
+            onSubmit: this.onUpdate.bind(this),
+        }});
     }
 
     render() {
         let editProject;
         if (this.state.project) {
-            editProject = <EditProject project={this.state.project} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange}/>;
+            editProject = <EditProject project={this.state.project} onSubmit={this.onSubmit.bind(this)} onChange={this.handleChange} onReset={this.onStateReset}/>;
         }
         return (<div>
+            <ConfirmModal show={this.state.showModal} onClose={() => this.setState({showModal: false})} options={this.state.modalOptions} />
             {editProject}
         </div>)
     }

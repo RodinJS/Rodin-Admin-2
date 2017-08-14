@@ -1,6 +1,8 @@
 /**
  * Created by Reinchard on 6/23/2017.
  */
+import {routerReducer} from 'react-router-redux';
+
 import {combineReducers} from 'redux';
 import authReducer from './login';
 import modulesReducer from './modules/modules';
@@ -21,7 +23,8 @@ const rootReducer = combineReducers({
     notificationReducer,
     countsReducer,
     projectsReducer,
-    projectReducer
+    projectReducer,
+    routerReducer,
 });
 
 

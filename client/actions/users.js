@@ -12,8 +12,8 @@ export function getUsersFail(err) {
     return {type: types.GET_USERS_FAIL, payload: err.data}
 }
 
-export function getUsers({sort = '-createdAt', limit =  50}) {
-    return dispatch => request.getUsers({sort, limit})
+export function getUsers({sort, page}) {
+    return dispatch => request.getUsers({sort, page})
         .then(payload => dispatch(getUsersSuccess(payload)))
         .catch(err => dispatch(getUsersFail(err)));
 }
